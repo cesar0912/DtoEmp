@@ -9,7 +9,7 @@ import java.util.Properties;
 public class BD {
 
 	/**
-	 * Conector a la base de datos
+	 * Conector a la base de datossssss
 	 */
 	private static Connection conn = null;
 
