@@ -99,7 +99,7 @@ public class Menu {
 		IO.print("Salario ? ");
 		double salario = IO.readDouble();
 		IO.print("fecha nacimiento");
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+		 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
 		LocalDate nacimiento = LocalDate.parse(IO.readString(),formatter);
 		IO.print("fecha nacimiento");
 		String iddep = IO.readString();
