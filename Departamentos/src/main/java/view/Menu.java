@@ -1,5 +1,6 @@
 package view;
 
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -56,6 +57,8 @@ public class Menu {
 		}		
 		
 	}
+
+=======
 	
 
 	private static void cerrar(DepartamentosFunciones dep, EmpleadosFunciones emp) {
@@ -74,6 +77,7 @@ public class Menu {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 
 	private static void mostrar(DepartamentosFunciones dep) {
@@ -98,14 +102,30 @@ public class Menu {
 		IO.print("Salario ? ");
 		double salario = IO.readDouble();
 		IO.print("fecha nacimiento");
-		 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
 		LocalDate nacimiento = LocalDate.parse(IO.readString(),formatter);
-		IO.print("fecha nacimiento");
-		String iddep = IO.readString();
-		Departamento dep = emp.buscarDep(iddep);
-		boolean anadido =emp.add(new Empleado(nombre, salario,nacimiento,dep));
+		IO.print("departamento uuid");
+		Departamento departamento = emp.buscarDepartamento(IO.readString());
+		boolean anadido =emp.add(new Empleado(nombre, salario,nacimiento,departamento));
 		IO.println(anadido ? "Añadido" : "No se ha podido añadir");
 	}
 
+	private static void eliminar(DepartamentosFunciones dep) {
+		IO.print("Código ? ");
+		String id = IO.readString();
+		boolean borrado = dep.delete(id);
+		IO.println(borrado ? "Borrado" : "No se ha podido borrar");
 
+	}
+	private static void eliminar(EmpleadosFunciones emp) {
+		IO.print("Código ? ");
+		String id = IO.readString();
+		boolean borrado = emp.delete(id);
+		IO.println(borrado ? "Borrado" : "No se ha podido borrar");
+
+	}
+	private static void cerrar(DepartamentosFunciones dep, EmpleadosFunciones emp) {
+		dep.close();
+		emp.close();
+	}
 }
