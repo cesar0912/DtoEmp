@@ -2,8 +2,13 @@ package dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
+import io.IO;
 import model.Departamento;
 import model.Empleado;
 
@@ -37,9 +42,39 @@ public class EmpleadosFunciones {
 	}
 
 	public String show() {
-		// TODO Auto-generated method stub
+		String sql = """
+				SELECT *
+				FROM empleados
+				""";
+		try {
+			StringBuffer sb = new StringBuffer();
+			ResultSet rs = conn.createStatement().executeQuery(sql);
+			while (rs.next()) {
+				Empleado emp = read(rs);
+				sb.append(emp.toString());
+				sb.append("\n");
+			}
+			return sb.toString();
+		} catch (SQLException e) {
+		}
+		return "";
+
+	}
+	private Empleado read(ResultSet rs) {
+		try {
+			String id = rs.getString("id");
+			UUID uuid = UUID.fromString(id);
+			String nombre = rs.getString("nombre");
+			Double salario = Double.parseDouble(rs.getString("salario"));
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			LocalDate nacimiento = LocalDate.parse(rs.getString("nacimiento"),formatter);
+			Departamento departamento = buscarDepartamento(rs.getString("departamentoId"));
+			return new Empleado(uuid, nombre, salario, nacimiento, departamento);
+		} catch (SQLException e) {
+		}
 		return null;
 	}
+
 	
 	public Departamento buscarDepartamento(String iddep) {
 		// TODO Auto-generated method stub
@@ -53,18 +88,15 @@ public class EmpleadosFunciones {
 				""";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
-			System.out.println("0");
 			ps.setString(1, empleado.getId().toString());
-			System.out.println("1");
 			ps.setString(2, empleado.getNombre());
-			System.out.println("2");
 			ps.setString(3, Double.toString(empleado.getSalario()));
-			System.out.println("3");
 			ps.setString(4, empleado.getNacimiento().toString());
-			System.out.println("4");
-			ps.setString(5, empleado.getDepartamento().toString());
-			System.out.println("5");
-			System.out.println(ps.executeUpdate());
+			if(empleado.getDepartamento()==null) {
+				ps.setString(5, null);
+			}else {
+				ps.setString(5, empleado.getDepartamento().getId().toString());
+			}
 			return ps.executeUpdate() > 0;
 		} catch (SQLException e) {
 		}
@@ -83,3 +115,4 @@ public class EmpleadosFunciones {
 	}
 
 }
+

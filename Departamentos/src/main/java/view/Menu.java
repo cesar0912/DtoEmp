@@ -80,7 +80,7 @@ public class Menu {
 		IO.print("Salario ? ");
 		double salario = IO.readDouble();
 		IO.print("fecha nacimiento");
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 		LocalDate nacimiento = LocalDate.parse(IO.readString(),formatter);
 		IO.print("departamento uuid");
 		Departamento departamento = emp.buscarDepartamento(IO.readString());
