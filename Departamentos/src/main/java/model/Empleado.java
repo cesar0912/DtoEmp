@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 public class Empleado {
 	UUID id; 
 	String nombre; 
-	int salario;
+	double salario;
 	LocalDate nacimiento;
 	Departamento departamento;
 	
 
 	
-	public Empleado(String nombre, int salario, LocalDate nacimiento, Departamento departamento) {
+	public Empleado(String nombre, double salario, LocalDate nacimiento, Departamento departamento) {
 		setId(UUID.randomUUID());
 		setNombre(nombre);
 		setSalario(salario);

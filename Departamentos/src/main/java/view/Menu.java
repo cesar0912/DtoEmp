@@ -1,6 +1,7 @@
 package view;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,6 +59,24 @@ public class Menu {
 //aaaaaaaaaaaaaaaa	
 	
 
+	private static void cerrar(DepartamentosFunciones dep, EmpleadosFunciones emp) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	private static void eliminar(EmpleadosFunciones emp) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	private static void eliminar(DepartamentosFunciones dep) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
 	private static void mostrar(DepartamentosFunciones dep) {
 		System.out.println(dep.show());
 	}
@@ -78,10 +97,14 @@ public class Menu {
 		IO.print("Nombre ? ");
 		String nombre = IO.readString();
 		IO.print("Salario ? ");
-		int salario = IO.readInt();
+		double salario = IO.readDouble();
 		IO.print("fecha nacimiento");
-		LocalDate nacimiento = LocalDate.fromString(IO.readString());
-		boolean anadido =dep.add(new Departamento(nombre, jefe));
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+		LocalDate nacimiento = LocalDate.parse(IO.readString(),formatter);
+		IO.print("fecha nacimiento");
+		String iddep = IO.readString();
+		Departamento dep = emp.buscarDep(iddep);
+		boolean anadido =emp.add(new Empleado(nombre, salario,nacimiento,dep));
 		IO.println(anadido ? "Añadido" : "No se ha podido añadir");
 	}
 
