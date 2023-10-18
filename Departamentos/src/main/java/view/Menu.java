@@ -56,7 +56,6 @@ public class Menu {
 		}		
 		
 	}
-//aaaaaaaaaaaaaaaa	
 	
 
 	private static void cerrar(DepartamentosFunciones dep, EmpleadosFunciones emp) {
