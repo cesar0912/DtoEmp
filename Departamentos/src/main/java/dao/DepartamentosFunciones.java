@@ -1,6 +1,10 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.UUID;
 
 import model.Departamento;
 import model.Empleado;
@@ -15,7 +19,7 @@ public class DepartamentosFunciones {
 		BD.close();
 	}
 	public String show() {
-		String sql = """
+		String sql = """ 
 				SELECT id, nombre, jefe
 				FROM departamentos
 				""";
@@ -32,16 +36,29 @@ public class DepartamentosFunciones {
 		}
 		return "";
 	}
+	private Departamento read(ResultSet rs) {
+		try {
+			String sUuid = rs.getString("id");
+			UUID uuid = UUID.fromString(sUuid);
+			String nombre = rs.getString("nombre");
+			String idjefe = rs.getString("jefe");
+			Empleado jefe =buscarJefe(idjefe);
+			return new Departamento(uuid, nombre, jefe);
+		} catch (SQLException e) {
+		}
+		return null;
+	}
+
 	public boolean add(Departamento departamento) {
 		String sql = """
 				INSERT INTO departamento (id, nombre, jefe)
-				VALUES (?, ?, ?, ?)
+				VALUES (?, ?, ?)
 				""";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, departamento.getId());
+			ps.setString(1, departamento.getId().toString());
 			ps.setString(2, departamento.getNombre());
-			ps.setString(3, departamento.getJefe().getId());
+			ps.setString(3, departamento.getJefe().getId().toString());
 			return ps.executeUpdate() > 0;
 		} catch (SQLException e) {
 		}
