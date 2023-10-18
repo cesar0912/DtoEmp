@@ -68,5 +68,9 @@ public class DepartamentosFunciones {
 		
 		return null;
 	}
+	public boolean delete(String id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }
