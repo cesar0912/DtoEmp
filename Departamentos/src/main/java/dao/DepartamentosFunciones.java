@@ -30,6 +30,7 @@ public class DepartamentosFunciones {
 							nombre TEXT,
 							jefeId TEXT,
 							FOREIGN KEY (jefeId) REFERENCES empleados(id)
+							ON DELETE CASCADE
 						)
 					""";
 		/*if (BD.typeDB.equals("mariadb")) {
@@ -134,8 +135,19 @@ public class DepartamentosFunciones {
 		return false;
 	}
 	public boolean delete(String id) {
-		// TODO Auto-generated method stub
+		String sql = """
+				DELETE FROM departamentos
+				WHERE id = ?
+				""";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			IO.println(e.getMessage());
+		}
 		return false;
+
 	}
 
 }
