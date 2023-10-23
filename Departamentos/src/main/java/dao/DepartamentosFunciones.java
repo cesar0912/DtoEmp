@@ -49,23 +49,6 @@ public class DepartamentosFunciones {
 			IO.print(e.getMessage());
 		}
 	}
-	public Departamento buscarDep(String id) {
-		String sql = """
-				SELECT id, nombre, salario,nacimiento,departamentoId
-				FROM empleados
-				WHERE id = ?
-				""";
-		try {
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, id);
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				return read(rs);
-			}
-		} catch (SQLException e) {
-		}
-		return null;
-	}
 	public Empleado buscarJefe(String id) {
 		String sql = """
 				SELECT id, nombre, salario,nacimiento,departamentoId

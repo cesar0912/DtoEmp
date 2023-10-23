@@ -60,26 +60,6 @@ public class Menu {
 		
 	}
 
-=======
-	
-
-	private static void cerrar(DepartamentosFunciones dep, EmpleadosFunciones emp) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	private static void eliminar(EmpleadosFunciones emp) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	private static void eliminar(DepartamentosFunciones dep) {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 
 	private static void mostrar(DepartamentosFunciones dep) {
