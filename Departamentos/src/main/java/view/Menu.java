@@ -15,8 +15,10 @@ import model.Empleado;
 public class Menu {
 
 	public static void main(String[] args) {
-		DepartamentosFunciones dep = new DepartamentosFunciones();
+		
 		EmpleadosFunciones emp = new EmpleadosFunciones();
+		DepartamentosFunciones dep = new DepartamentosFunciones();
+		
 //		agenda.drop();
 		
 		List<String> opciones = List.of( 
