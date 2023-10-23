@@ -28,7 +28,9 @@ public class Menu {
 				"4: Añadir empleado",
 				"5: Eliminar departamento",
 				"6: Eliminar empleado",
-				"7: Salir");
+				"7: Modificar departamento",
+				"8: Modificar empleado",
+				"9: Salir");
 		
 		while (true) {
 			System.out.println(opciones);
@@ -52,11 +54,36 @@ public class Menu {
 				eliminar(emp);
 				break;
 			case 7:
+				modificar(dep);
+				break;
+			case 8:
+				modificar(emp);
+				break;
+			case 9:
 				cerrar(dep,emp);
 				return;
 			default:
 			}
 		}		
+		
+	}
+
+
+
+	private static void modificar(EmpleadosFunciones emp) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	private static void modificar(DepartamentosFunciones dep) {
+		IO.print("Nombre ? ");
+		String nombre = IO.readString();
+		IO.print("jefe uuid ");
+		Empleado jefe = dep.buscarJefe(IO.readString());
+		boolean anadido =dep.modificar(new Departamento(nombre, jefe));
+		IO.println(anadido ? "Añadido" : "No se ha podido añadir");
 		
 	}
 
@@ -96,7 +123,7 @@ public class Menu {
 		IO.print("Código ? ");
 		String id = IO.readString();
 		boolean borrado = dep.delete(id);
-		IO.println(borrado ? "Borrado" : "No se ha podido borrar");
+		IO.println(borrado ? "Borrado" : "No se ha podido borrar o no existe");
 
 	}
 	private static void eliminar(EmpleadosFunciones emp) {

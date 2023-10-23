@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
+import io.IO;
 import model.Departamento;
 import model.Empleado;
 
@@ -30,6 +31,7 @@ public class EmpleadosFunciones {
 							nacimiento TEXT,
 							departamentoId TEXT,
 							FOREIGN KEY (departamentoId) REFERENCES departamentos(id)
+							ON DELETE CASCADE
 						)
 					""";
 		}
@@ -130,8 +132,19 @@ public class EmpleadosFunciones {
 	}
 
 	public boolean delete(String id) {
-		// TODO Auto-generated method stub
+		String sql = """
+				DELETE FROM empleados
+				WHERE id = ?
+				""";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			IO.println(e.getMessage());
+		}
 		return false;
+
 	}
 
 	public void close() {
