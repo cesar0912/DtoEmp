@@ -29,8 +29,8 @@ public class Empleado {
 
 	
 	public String toString() {
-		if(departamento==null)
-		return String.format("%s | %s | salario: %,.2f € | %s ", id, nombre, salario,nacimiento);
+		if(departamento==null) {
+		return String.format("%s | %s | salario: %,.2f € | %s ", id, nombre, salario,nacimiento);}
 		return String.format("%s | %s | salario: %,.2f € | %s | %s", id, nombre, salario,nacimiento,departamento.getId());
 	}
 }

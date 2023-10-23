@@ -51,9 +51,9 @@ public class DepartamentosFunciones {
 	}
 	public Departamento buscarDep(String id) {
 		String sql = """
-				SELECT id, nombre, salario,nacimiento,iddepartamento
+				SELECT id, nombre, salario,nacimiento,departamentoId
 				FROM empleados
-				WHERE uuid = ?
+				WHERE id = ?
 				""";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -68,9 +68,9 @@ public class DepartamentosFunciones {
 	}
 	public Empleado buscarJefe(String id) {
 		String sql = """
-				SELECT id, nombre, jefeId
-				FROM departamentos
-				WHERE uuid = ?
+				SELECT id, nombre, salario,nacimiento,departamentoId
+				FROM empleados
+				WHERE id = ?
 				""";
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -89,10 +89,9 @@ public class DepartamentosFunciones {
 			UUID uuid = UUID.fromString(sUuid);
 			String nombre = rs.getString("nombre");
 			Double salario = rs.getDouble("salario");
-			 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 			LocalDate nacimiento =LocalDate.parse(rs.getString("nacimiento"),formatter);
-			String iddep = rs.getString("iddepartamento");
-			Departamento dep = buscarDep(iddep);
+			Departamento dep = null;
 			return new Empleado(uuid, nombre, salario,nacimiento,dep);
 		} catch (SQLException e) {
 		}

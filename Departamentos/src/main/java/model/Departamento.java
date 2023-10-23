@@ -24,8 +24,8 @@ public class Departamento {
 
 	
 	public String toString() {
-		if(jefe==null)
-		return String.format("%s | %s  ", id, nombre);
+		if(jefe==null) {
+		return String.format("%s | %s  ", id, nombre);}
 		return String.format("%s | %s | %s", id, nombre,jefe.getId());
 	}
 }

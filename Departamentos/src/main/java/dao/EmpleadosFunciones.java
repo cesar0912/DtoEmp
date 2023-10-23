@@ -75,11 +75,37 @@ public class EmpleadosFunciones {
 	}
 
 	
-	public Departamento buscarDepartamento(String iddep) {
-		// TODO Auto-generated method stub
+	public Departamento buscarDepartamento(String id) {
+		String sql = """
+				SELECT id, nombre, jefeId
+				FROM departamentos
+				WHERE id = ?
+				""";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return readDep(rs);
+			}
+		} catch (SQLException e) {
+		}
 		return null;
+		
 	}
 	
+	
+	private Departamento readDep(ResultSet rs) {
+		try {
+			String sUuid = rs.getString("id");
+			UUID uuid = UUID.fromString(sUuid);
+			String nombre = rs.getString("nombre");
+			Empleado jefe =null;
+			return new Departamento(uuid, nombre, jefe);
+		} catch (SQLException e) {
+		}
+		return null;
+	}
 	public boolean add(Empleado empleado) {
 		String sql = """
 				INSERT INTO empleados (id, nombre, salario, nacimiento, departamentoId)
