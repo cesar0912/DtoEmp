@@ -50,24 +50,6 @@ public class DepartamentosFunciones {
 			IO.print(e.getMessage());
 		}
 	}
-	public boolean modificar(Departamento d) {
-		String sql = """
-				UPDATE agenda
-				SET  nombre = ?, jefeId = ?
-				WHERE id = ?
-				""";
-		try {
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, d.getNombre());
-			ps.setString(2, d.getJefe().toString());
-			ps.setString(3, d.getId().toString());
-			return ps.executeUpdate() > 0;
-		} catch (SQLException e) {
-		}
-		return false;
-	}
-
-	
 	public Empleado buscarJefe(String id) {
 		String sql = """
 				SELECT id, nombre, salario,nacimiento,departamentoId

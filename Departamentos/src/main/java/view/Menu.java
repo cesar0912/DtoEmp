@@ -69,26 +69,6 @@ public class Menu {
 	}
 
 
-
-	private static void modificar(EmpleadosFunciones emp) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-	private static void modificar(DepartamentosFunciones dep) {
-		IO.print("Nombre ? ");
-		String nombre = IO.readString();
-		IO.print("jefe uuid ");
-		Empleado jefe = dep.buscarJefe(IO.readString());
-		boolean anadido =dep.modificar(new Departamento(nombre, jefe));
-		IO.println(anadido ? "Añadido" : "No se ha podido añadir");
-		
-	}
-
-
-
 	private static void mostrar(DepartamentosFunciones dep) {
 		System.out.println(dep.show());
 	}
