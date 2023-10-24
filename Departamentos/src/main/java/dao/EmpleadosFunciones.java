@@ -31,6 +31,7 @@ public class EmpleadosFunciones {
 							nacimiento TEXT,
 							departamentoId TEXT,
 							FOREIGN KEY (departamentoId) REFERENCES departamentos(id)
+							ON DELETE CASCADE
 						)
 					""";
 		}
@@ -131,8 +132,27 @@ public class EmpleadosFunciones {
 	}
 
 	public boolean delete(String id) {
-		// TODO Auto-generated method stub
+		String sql = """
+				DELETE FROM empleados
+				WHERE id = ?
+				""";
+		String sqlupdate = """
+				UPDATE departamentos
+				SET jefeId=null
+				WHERE jefeId = ?
+				""";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+			ps.executeUpdate();
+			PreparedStatement ps2 = conn.prepareStatement(sqlupdate);
+			ps2.setString(1, id);
+			return  ps2.executeUpdate()> 0;
+		} catch (SQLException e) {
+			IO.println(e.getMessage());
+		}
 		return false;
+
 	}
 
 	public void close() {

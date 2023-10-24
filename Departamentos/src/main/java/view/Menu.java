@@ -143,7 +143,7 @@ public class Menu {
 		IO.print("Código ? ");
 		String id = IO.readString();
 		boolean borrado = dep.delete(id);
-		IO.println(borrado ? "Borrado" : "No se ha podido borrar");
+		IO.println(borrado ? "Borrado" : "No se ha podido borrar o no existe");
 
 	}
 	private static void eliminar(EmpleadosFunciones emp) {

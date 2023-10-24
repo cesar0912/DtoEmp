@@ -30,6 +30,7 @@ public class DepartamentosFunciones {
 							nombre TEXT,
 							jefeId TEXT,
 							FOREIGN KEY (jefeId) REFERENCES empleados(id)
+							ON DELETE CASCADE
 						)
 					""";
 		/*if (BD.typeDB.equals("mariadb")) {
@@ -48,23 +49,6 @@ public class DepartamentosFunciones {
 		} catch (SQLException e) {
 			IO.print(e.getMessage());
 		}
-	}
-	public Departamento buscarDep(String id) {
-		String sql = """
-				SELECT id, nombre, salario,nacimiento,departamentoId
-				FROM empleados
-				WHERE id = ?
-				""";
-		try {
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, id);
-			ResultSet rs = ps.executeQuery();
-			if (rs.next()) {
-				return read(rs);
-			}
-		} catch (SQLException e) {
-		}
-		return null;
 	}
 	public Empleado buscarJefe(String id) {
 		String sql = """
@@ -151,8 +135,29 @@ public class DepartamentosFunciones {
 		return false;
 	}
 	public boolean delete(String id) {
-		// TODO Auto-generated method stub
+		String sql = """
+				DELETE FROM departamentos
+				WHERE id = ?
+				""";
+		String sqlupdate = """
+				UPDATE empleados
+				SET departamentoId=null
+				WHERE departamentoId = ?
+				""";
+
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+			ps.executeUpdate();
+			PreparedStatement ps2 = conn.prepareStatement(sqlupdate);
+			ps2.setString(1, id);
+			return  ps2.executeUpdate()> 0;
+		
+		} catch (SQLException e) {
+			IO.println(e.getMessage());
+		}
 		return false;
+
 	}
 	public boolean update(Departamento departamento) {
 		String sql = """
