@@ -159,5 +159,26 @@ public class DepartamentosFunciones {
 		return false;
 
 	}
+	public boolean update(Departamento departamento) {
+		String sql = """
+				UPDATE departamentos
+				SET nombre = ?, jefeId = ?
+				WHERE id = ?
+				""";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(3, departamento.getId().toString());
+			ps.setString(1, departamento.getNombre());
+			if(departamento.getJefe()==null) {
+				ps.setString(2, null);
+			}else {
+				ps.setString(2, departamento.getJefe().getId().toString());
+			}
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			IO.print(e.getMessage());
+		}
+		return false;
+	}
 
 }

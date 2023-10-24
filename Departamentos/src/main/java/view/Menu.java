@@ -54,10 +54,10 @@ public class Menu {
 				eliminar(emp);
 				break;
 			case 7:
-				modificar(dep);
+				modificar(dep, emp);
 				break;
 			case 8:
-				modificar(emp);
+				modificar(emp, dep);
 				break;
 			case 9:
 				cerrar(dep,emp);
@@ -68,18 +68,46 @@ public class Menu {
 		
 	}
 
-
-	private static void modificar(DepartamentosFunciones dep) {
-		// TODO Auto-generated method stub
-		
+	private static void modificar(EmpleadosFunciones emp, DepartamentosFunciones dep) {
+		IO.print("Código del contacto a modificar ? ");
+		String id = IO.readString();
+		UUID uuid = UUID.fromString(id);
+		Empleado empleado = dep.buscarJefe(id);
+		IO.print("Nombre [" + empleado.getNombre() + "] ? ");
+		String nombre = IO.readString();
+		if (!nombre.isBlank()) {
+			empleado.setNombre(nombre);
+		}
+		IO.print("Salario [" + empleado.getSalario() + "] ? ");
+		double salario = IO.readDouble();
+		empleado.setSalario(salario);
+		IO.print("Nacimiento [" + empleado.getNacimiento() + "] ? ");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		LocalDate nacimiento = LocalDate.parse(IO.readString(),formatter);
+		empleado.setNacimiento(nacimiento);
+		IO.print("Departamento [" + empleado.getDepartamento() + "] ? ");
+		Departamento departamento = emp.buscarDepartamento(IO.readString());
+		empleado.setDepartamento(departamento);
+		boolean anadido = emp.update(empleado);
+		IO.println(anadido ? "Modificado" : "No se ha podido modificar");
 	}
 
-
-	private static void modificar(EmpleadosFunciones emp) {
-		// TODO Auto-generated method stub
-		
+	private static void modificar(DepartamentosFunciones dep, EmpleadosFunciones emp) {
+		IO.print("Código del departamento a modificar ? ");
+		String id = IO.readString();
+		UUID uuid = UUID.fromString(id);
+		Departamento departamento = emp.buscarDepartamento(id);
+		IO.print("Nombre [" + departamento.getNombre() + "] ? ");
+		String nombre = IO.readString();
+		if (!nombre.isBlank()) {
+			departamento.setNombre(nombre);
+		}
+		IO.print("Jefe [" + departamento.getJefe() + "] ? ");
+		Empleado empleado = dep.buscarJefe(IO.readString());
+		departamento.setJefe(empleado);
+		boolean anadido = dep.update(departamento);
+		IO.println(anadido ? "Modificado" : "No se ha podido modificar");
 	}
-
 
 	private static void mostrar(DepartamentosFunciones dep) {
 		System.out.println(dep.show());

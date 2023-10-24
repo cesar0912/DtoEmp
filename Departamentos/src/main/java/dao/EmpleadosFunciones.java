@@ -156,8 +156,33 @@ public class EmpleadosFunciones {
 	}
 
 	public void close() {
-		// TODO Auto-generated method stub
+		BD.close();
 		
+	}
+
+	public boolean update(Empleado empleado) {
+		String sql = """
+				UPDATE empleados
+				SET nombre = ?, salario = ?, nacimiento = ?, departamentoId = ?
+				WHERE id = ?
+				""";
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(5, empleado.getId().toString());
+			ps.setString(1, empleado.getNombre());
+			ps.setString(2, Double.toString(empleado.getSalario()));
+			ps.setString(3, empleado.getNacimiento().toString());
+			if(empleado.getDepartamento()==null) {
+				ps.setString(4, null);
+			}else {
+				ps.setString(4, empleado.getDepartamento().getId().toString());
+			}
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			IO.print(e.getMessage());
+		}
+		return false;
+
 	}
 
 }
