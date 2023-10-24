@@ -30,6 +30,7 @@ public class DepartamentosFunciones {
 							nombre TEXT,
 							jefeId TEXT,
 							FOREIGN KEY (jefeId) REFERENCES empleados(id)
+							ON DELETE CASCADE
 						)
 					""";
 		/*if (BD.typeDB.equals("mariadb")) {
@@ -151,6 +152,7 @@ public class DepartamentosFunciones {
 			PreparedStatement ps2 = conn.prepareStatement(sqlupdate);
 			ps2.setString(1, id);
 			return  ps2.executeUpdate()> 0;
+		
 		} catch (SQLException e) {
 			IO.println(e.getMessage());
 		}

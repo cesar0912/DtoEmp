@@ -31,6 +31,7 @@ public class EmpleadosFunciones {
 							nacimiento TEXT,
 							departamentoId TEXT,
 							FOREIGN KEY (departamentoId) REFERENCES departamentos(id)
+							ON DELETE CASCADE
 						)
 					""";
 		}
