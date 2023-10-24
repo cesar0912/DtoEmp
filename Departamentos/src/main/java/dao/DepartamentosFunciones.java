@@ -134,8 +134,28 @@ public class DepartamentosFunciones {
 		return false;
 	}
 	public boolean delete(String id) {
-		// TODO Auto-generated method stub
+		String sql = """
+				DELETE FROM departamentos
+				WHERE id = ?
+				""";
+		String sqlupdate = """
+				UPDATE empleados
+				SET departamentoId=null
+				WHERE departamentoId = ?
+				""";
+
+		try {
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, id);
+			ps.executeUpdate();
+			PreparedStatement ps2 = conn.prepareStatement(sqlupdate);
+			ps2.setString(1, id);
+			return  ps2.executeUpdate()> 0;
+		} catch (SQLException e) {
+			IO.println(e.getMessage());
+		}
 		return false;
+
 	}
 
 }
