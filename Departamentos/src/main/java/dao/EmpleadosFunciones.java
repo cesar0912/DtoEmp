@@ -43,7 +43,8 @@ public class EmpleadosFunciones {
 						  salario VARCHAR(255),
 						  nacimiento VARCHAR(255),
 						  departamentoId VARCHAR(255),
-						  PRIMARY KEY (id)
+						  PRIMARY KEY (id),
+						  foreign key (departamentoId) references departamentos(id)
 						)
 					""";
 		}

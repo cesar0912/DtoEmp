@@ -42,7 +42,8 @@ public class DepartamentosFunciones {
 						  id VARCHAR(255) NOT NULL,
 						  nombre VARCHAR(255) NOT NULL,
 						  jefeId VARCHAR(255),
-						  PRIMARY KEY (id)
+						  PRIMARY KEY (id),
+						  foreign key (jefeId) references empleados(id)
 
 						)
 					""";
