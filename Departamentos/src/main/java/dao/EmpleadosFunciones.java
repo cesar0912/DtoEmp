@@ -35,9 +35,22 @@ public class EmpleadosFunciones {
 						)
 					""";
 		}
+		if (BD.typeDB.equals("mariadb")) {
+			sql = """
+						CREATE TABLE IF NOT EXISTS empleados (
+						  id VARCHAR(255) NOT NULL,
+						  nombre VARCHAR(255),
+						  salario VARCHAR(255),
+						  nacimiento VARCHAR(255),
+						  departamentoId VARCHAR(255),
+						  PRIMARY KEY (id)
+						)
+					""";
+		}
 		try {
 			conn.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
+			IO.println(e.getMessage());
 		}
 
 	}

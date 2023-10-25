@@ -15,41 +15,48 @@ import model.Empleado;
 public class DepartamentosFunciones {
 
 	private Connection conn = null;
+
 	public DepartamentosFunciones() {
 		conn = BD.getConnection();
 		createTables();
 	}
+
 	public void close() {
 		BD.close();
 	}
+
 	private void createTables() {
 		String sql = null;
+		sql = """
+					CREATE TABLE IF NOT EXISTS departamentos (
+						id TEXT PRIMARY KEY,
+						nombre TEXT,
+						jefeId TEXT,
+						FOREIGN KEY (jefeId) REFERENCES empleados(id)
+						ON DELETE CASCADE
+					)
+				""";
+		if (BD.typeDB.equals("mariadb")) {
 			sql = """
 						CREATE TABLE IF NOT EXISTS departamentos (
-							id TEXT PRIMARY KEY,
-							nombre TEXT,
-							jefeId TEXT,
-							FOREIGN KEY (jefeId) REFERENCES empleados(id)
-							ON DELETE CASCADE
-						)
-					""";
-		/*if (BD.typeDB.equals("mariadb")) {
-			sql = """
-						CREATE TABLE IF NOT EXISTS agenda (
-						  uuid CHAR(36) PRIMARY KEY,
+						  id VARCHAR(255) NOT NULL,
 						  nombre VARCHAR(255) NOT NULL,
-						  telefono VARCHAR(255) DEFAULT NULL,
-						  edad INT DEFAULT NULL,
-						  PRIMARY KEY (uuid)
+						  jefeId VARCHAR(255),
+						  PRIMARY KEY (id)
+
 						)
 					""";
-		}*/
+
+		}
 		try {
 			conn.createStatement().executeUpdate(sql);
+			
 		} catch (SQLException e) {
-			IO.print(e.getMessage());
+			IO.println(e.getMessage());
 		}
 	}
+
+
 	public Empleado buscarJefe(String id) {
 		String sql = """
 				SELECT id, nombre, salario,nacimiento,departamentoId
@@ -67,6 +74,7 @@ public class DepartamentosFunciones {
 		}
 		return null;
 	}
+
 	private Empleado readEmp(ResultSet rs) {
 		try {
 			String sUuid = rs.getString("id");
@@ -74,15 +82,16 @@ public class DepartamentosFunciones {
 			String nombre = rs.getString("nombre");
 			Double salario = rs.getDouble("salario");
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			LocalDate nacimiento =LocalDate.parse(rs.getString("nacimiento"),formatter);
+			LocalDate nacimiento = LocalDate.parse(rs.getString("nacimiento"), formatter);
 			Departamento dep = null;
-			return new Empleado(uuid, nombre, salario,nacimiento,dep);
+			return new Empleado(uuid, nombre, salario, nacimiento, dep);
 		} catch (SQLException e) {
 		}
 		return null;
 	}
+
 	public String show() {
-		String sql = """ 
+		String sql = """
 				SELECT id, nombre, jefeId
 				FROM departamentos
 				""";
@@ -91,9 +100,9 @@ public class DepartamentosFunciones {
 			ResultSet rs = conn.createStatement().executeQuery(sql);
 			while (rs.next()) {
 				Departamento d = read(rs);
-				if(d.toString()!=null) {
-				sb.append(d.toString());
-				sb.append("\n");
+				if (d.toString() != null) {
+					sb.append(d.toString());
+					sb.append("\n");
 				}
 			}
 			return sb.toString();
@@ -101,13 +110,14 @@ public class DepartamentosFunciones {
 		}
 		return "";
 	}
+
 	private Departamento read(ResultSet rs) {
 		try {
 			String sUuid = rs.getString("id");
 			UUID uuid = UUID.fromString(sUuid);
 			String nombre = rs.getString("nombre");
 			String idjefe = rs.getString("jefeId");
-			Empleado jefe =buscarJefe(idjefe);
+			Empleado jefe = buscarJefe(idjefe);
 			return new Departamento(uuid, nombre, jefe);
 		} catch (SQLException e) {
 		}
@@ -123,9 +133,9 @@ public class DepartamentosFunciones {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, departamento.getId().toString());
 			ps.setString(2, departamento.getNombre());
-			if(departamento.getJefe()==null) {
+			if (departamento.getJefe() == null) {
 				ps.setString(3, null);
-			}else {
+			} else {
 				ps.setString(3, departamento.getJefe().getId().toString());
 			}
 			return ps.executeUpdate() > 0;
@@ -134,6 +144,7 @@ public class DepartamentosFunciones {
 		}
 		return false;
 	}
+
 	public boolean delete(String id) {
 		String sql = """
 				DELETE FROM departamentos
@@ -151,14 +162,15 @@ public class DepartamentosFunciones {
 			ps.executeUpdate();
 			PreparedStatement ps2 = conn.prepareStatement(sqlupdate);
 			ps2.setString(1, id);
-			return  ps2.executeUpdate()> 0;
-		
+			return ps2.executeUpdate() > 0;
+
 		} catch (SQLException e) {
 			IO.println(e.getMessage());
 		}
 		return false;
 
 	}
+
 	public boolean update(Departamento departamento) {
 		String sql = """
 				UPDATE departamentos
@@ -169,9 +181,9 @@ public class DepartamentosFunciones {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(3, departamento.getId().toString());
 			ps.setString(1, departamento.getNombre());
-			if(departamento.getJefe()==null) {
+			if (departamento.getJefe() == null) {
 				ps.setString(2, null);
-			}else {
+			} else {
 				ps.setString(2, departamento.getJefe().getId().toString());
 			}
 			return ps.executeUpdate() > 0;
