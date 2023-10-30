@@ -39,9 +39,9 @@ public class DepartamentosFunciones {
 		if (BD.typeDB.equals("mariadb")) {
 			sql = """
 						CREATE TABLE IF NOT EXISTS departamentos (
-						  id VARCHAR(255) NOT NULL,
+						  id UUID NOT NULL,
 						  nombre VARCHAR(255) NOT NULL,
-						  jefeId VARCHAR(255),
+						  jefeId UUID,
 						  PRIMARY KEY (id),
 						  foreign key (jefeId) references empleados(id)
 

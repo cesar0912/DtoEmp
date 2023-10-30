@@ -1,6 +1,5 @@
 package view;
 
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -15,23 +14,16 @@ import model.Empleado;
 public class Menu {
 
 	public static void main(String[] args) {
-		
+
 		EmpleadosFunciones emp = new EmpleadosFunciones();
 		DepartamentosFunciones dep = new DepartamentosFunciones();
-		
+
 //		agenda.drop();
-		
-		List<String> opciones = List.of( 
-				"1: Mostrar departamentos", 
-				"2: Mostrar empleados", 
-				"3: Añadir departamento", 
-				"4: Añadir empleado",
-				"5: Eliminar departamento",
-				"6: Eliminar empleado",
-				"7: Modificar departamento",
-				"8: Modificar empleado",
-				"9: Salir");
-		
+
+		List<String> opciones = List.of("1: Mostrar departamentos", "2: Mostrar empleados", "3: Añadir departamento",
+				"4: Añadir empleado", "5: Eliminar departamento", "6: Eliminar empleado", "7: Modificar departamento",
+				"8: Modificar empleado", "9: Salir");
+
 		while (true) {
 			System.out.println(opciones);
 			switch (IO.readInt()) {
@@ -60,12 +52,12 @@ public class Menu {
 				modificar(emp, dep);
 				break;
 			case 9:
-				cerrar(dep,emp);
+				cerrar(dep, emp);
 				return;
 			default:
 			}
-		}		
-		
+		}
+
 	}
 
 	private static void modificar(EmpleadosFunciones emp, DepartamentosFunciones dep) {
@@ -83,7 +75,7 @@ public class Menu {
 		empleado.setSalario(salario);
 		IO.print("Nacimiento [" + empleado.getNacimiento() + "] ? ");
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		LocalDate nacimiento = LocalDate.parse(IO.readString(),formatter);
+		LocalDate nacimiento = LocalDate.parse(IO.readString(), formatter);
 		empleado.setNacimiento(nacimiento);
 		IO.print("Departamento [" + empleado.getDepartamento() + "] ? ");
 		Departamento departamento = emp.buscarDepartamento(IO.readString());
@@ -116,15 +108,16 @@ public class Menu {
 	private static void mostrar(EmpleadosFunciones emp) {
 		System.out.println(emp.show());
 	}
-	
+
 	private static void anadir(DepartamentosFunciones dep) {
 		IO.print("Nombre ? ");
 		String nombre = IO.readString();
 		IO.print("jefe uuid ");
 		Empleado jefe = dep.buscarJefe(IO.readString());
-		boolean anadido =dep.add(new Departamento(nombre, jefe));
+		boolean anadido = dep.add(new Departamento(nombre, jefe));
 		IO.println(anadido ? "Añadido" : "No se ha podido añadir");
 	}
+
 	private static void anadir(EmpleadosFunciones emp) {
 		IO.print("Nombre ? ");
 		String nombre = IO.readString();
@@ -132,10 +125,10 @@ public class Menu {
 		double salario = IO.readDouble();
 		IO.print("fecha nacimiento");
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		LocalDate nacimiento = LocalDate.parse(IO.readString(),formatter);
+		LocalDate nacimiento = LocalDate.parse(IO.readString(), formatter);
 		IO.print("departamento uuid");
 		Departamento departamento = emp.buscarDepartamento(IO.readString());
-		boolean anadido =emp.add(new Empleado(nombre, salario,nacimiento,departamento));
+		boolean anadido = emp.add(new Empleado(nombre, salario, nacimiento, departamento));
 		IO.println(anadido ? "Añadido" : "No se ha podido añadir");
 	}
 
@@ -146,6 +139,7 @@ public class Menu {
 		IO.println(borrado ? "Borrado" : "No se ha podido borrar o no existe");
 
 	}
+
 	private static void eliminar(EmpleadosFunciones emp) {
 		IO.print("Código ? ");
 		String id = IO.readString();
@@ -153,6 +147,7 @@ public class Menu {
 		IO.println(borrado ? "Borrado" : "No se ha podido borrar");
 
 	}
+
 	private static void cerrar(DepartamentosFunciones dep, EmpleadosFunciones emp) {
 		dep.close();
 		emp.close();

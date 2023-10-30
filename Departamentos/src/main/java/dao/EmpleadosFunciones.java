@@ -27,7 +27,7 @@ public class EmpleadosFunciones {
 						CREATE TABLE IF NOT EXISTS empleados (
 							id TEXT PRIMARY KEY,
 							nombre TEXT,
-							salario TEXT,
+							salario REAL,
 							nacimiento TEXT,
 							departamentoId TEXT,
 							FOREIGN KEY (departamentoId) REFERENCES departamentos(id)
@@ -38,11 +38,11 @@ public class EmpleadosFunciones {
 		if (BD.typeDB.equals("mariadb")) {
 			sql = """
 						CREATE TABLE IF NOT EXISTS empleados (
-						  id VARCHAR(255) NOT NULL,
+						  id UUID NOT NULL,
 						  nombre VARCHAR(255),
-						  salario VARCHAR(255),
-						  nacimiento VARCHAR(255),
-						  departamentoId VARCHAR(255),
+						  salario DOUBLE,
+						  nacimiento DATE,
+						  departamentoId UUID,
 						  PRIMARY KEY (id),
 						  foreign key (departamentoId) references departamentos(id)
 						)
@@ -131,7 +131,7 @@ public class EmpleadosFunciones {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, empleado.getId().toString());
 			ps.setString(2, empleado.getNombre());
-			ps.setString(3, Double.toString(empleado.getSalario()));
+			ps.setDouble(3, empleado.getSalario());
 			ps.setString(4, empleado.getNacimiento().toString());
 			if(empleado.getDepartamento()==null) {
 				ps.setString(5, null);
