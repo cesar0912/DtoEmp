@@ -15,11 +15,12 @@ import model.Empleado;
 public class EmpleadosFunciones {
 
 	private Connection conn = null;
+
 	public EmpleadosFunciones() {
 		conn = BD.getConnection();
 		crearTabla();
 	}
-	
+
 	private void crearTabla() {
 		String sql = null;
 		if (BD.typeDB.equals("sqlite")) {
@@ -75,20 +76,15 @@ public class EmpleadosFunciones {
 		return "";
 
 	}
+
 	private Empleado read(ResultSet rs) {
 		try {
 			String id = rs.getString("id");
 			UUID uuid = UUID.fromString(id);
 			String nombre = rs.getString("nombre");
 			Double salario = Double.parseDouble(rs.getString("salario"));
-			LocalDate nacimiento=null;
-			if (BD.typeDB.equals("sqlite")) {
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				 nacimiento = LocalDate.parse(rs.getString("nacimiento"),formatter);
-			}else {
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				 nacimiento = LocalDate.parse(rs.getString("nacimiento"),formatter);
-			}
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+			LocalDate nacimiento = LocalDate.parse(rs.getString("nacimiento"), formatter);
 			Departamento departamento = buscarDepartamento(rs.getString("departamentoId"));
 			return new Empleado(uuid, nombre, salario, nacimiento, departamento);
 		} catch (SQLException e) {
@@ -96,7 +92,6 @@ public class EmpleadosFunciones {
 		return null;
 	}
 
-	
 	public Departamento buscarDepartamento(String id) {
 		String sql = """
 				SELECT id, nombre, jefeId
@@ -113,21 +108,21 @@ public class EmpleadosFunciones {
 		} catch (SQLException e) {
 		}
 		return null;
-		
+
 	}
-	
-	
+
 	private Departamento readDep(ResultSet rs) {
 		try {
 			String sUuid = rs.getString("id");
 			UUID uuid = UUID.fromString(sUuid);
 			String nombre = rs.getString("nombre");
-			Empleado jefe =null;
+			Empleado jefe = null;
 			return new Departamento(uuid, nombre, jefe);
 		} catch (SQLException e) {
 		}
 		return null;
 	}
+
 	public boolean add(Empleado empleado) {
 		String sql = """
 				INSERT INTO empleados (id, nombre, salario, nacimiento, departamentoId)
@@ -139,13 +134,13 @@ public class EmpleadosFunciones {
 			ps.setString(2, empleado.getNombre());
 			ps.setDouble(3, empleado.getSalario());
 			if (BD.typeDB.equals("sqlite")) {
-			ps.setString(4, empleado.getNacimiento().toString());
-			}else {
+				ps.setString(4, empleado.getNacimiento().toString());
+			} else {
 				ps.setDate(4, java.sql.Date.valueOf(empleado.getNacimiento()));
 			}
-			if(empleado.getDepartamento()==null) {
+			if (empleado.getDepartamento() == null) {
 				ps.setString(5, null);
-			}else {
+			} else {
 				ps.setString(5, empleado.getDepartamento().getId().toString());
 			}
 			return ps.executeUpdate() > 0;
@@ -171,7 +166,7 @@ public class EmpleadosFunciones {
 			ps.executeUpdate();
 			PreparedStatement ps2 = conn.prepareStatement(sqlupdate);
 			ps2.setString(1, id);
-			return  ps2.executeUpdate()> 0;
+			return ps2.executeUpdate() > 0;
 		} catch (SQLException e) {
 			IO.println(e.getMessage());
 		}
@@ -181,7 +176,7 @@ public class EmpleadosFunciones {
 
 	public void close() {
 		BD.close();
-		
+
 	}
 
 	public boolean update(Empleado empleado) {
@@ -196,9 +191,9 @@ public class EmpleadosFunciones {
 			ps.setString(1, empleado.getNombre());
 			ps.setString(2, Double.toString(empleado.getSalario()));
 			ps.setString(3, empleado.getNacimiento().toString());
-			if(empleado.getDepartamento()==null) {
+			if (empleado.getDepartamento() == null) {
 				ps.setString(4, null);
-			}else {
+			} else {
 				ps.setString(4, empleado.getDepartamento().getId().toString());
 			}
 			return ps.executeUpdate() > 0;
@@ -210,4 +205,3 @@ public class EmpleadosFunciones {
 	}
 
 }
-
