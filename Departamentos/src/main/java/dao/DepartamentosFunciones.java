@@ -27,6 +27,7 @@ public class DepartamentosFunciones {
 
 	private void createTables() {
 		String sql = null;
+		if (BD.typeDB.equals("sqlite")) {
 		sql = """
 					CREATE TABLE IF NOT EXISTS departamentos (
 						id TEXT PRIMARY KEY,
@@ -36,6 +37,7 @@ public class DepartamentosFunciones {
 						ON DELETE CASCADE
 					)
 				""";
+		}
 		if (BD.typeDB.equals("mariadb")) {
 			sql = """
 						CREATE TABLE IF NOT EXISTS departamentos (
@@ -57,7 +59,11 @@ public class DepartamentosFunciones {
 		}
 	}
 
-
+	/**
+	 * Busca el jefe de un departamento
+	 * @param id
+	 * @return
+	 */
 	public Empleado buscarJefe(String id) {
 		String sql = """
 				SELECT id, nombre, salario,nacimiento,departamentoId
@@ -90,7 +96,10 @@ public class DepartamentosFunciones {
 		}
 		return null;
 	}
-
+	/**
+	 * Muestra los departamentos
+	 * @return
+	 */
 	public String show() {
 		String sql = """
 				SELECT id, nombre, jefeId
@@ -112,6 +121,11 @@ public class DepartamentosFunciones {
 		return "";
 	}
 
+	/**
+	 * Crea un departamento a partir de los datos de la tabla
+	 * @param rs
+	 * @return
+	 */
 	private Departamento read(ResultSet rs) {
 		try {
 			String sUuid = rs.getString("id");
@@ -124,7 +138,11 @@ public class DepartamentosFunciones {
 		}
 		return null;
 	}
-
+	/**
+	 * Aniade un departamento a la tabla
+	 * @param departamento
+	 * @return
+	 */
 	public boolean add(Departamento departamento) {
 		String sql = """
 				INSERT INTO departamentos (id, nombre, jefeId)
@@ -145,7 +163,11 @@ public class DepartamentosFunciones {
 		}
 		return false;
 	}
-
+	/**
+	 * Borra un departamento de la tabla
+	 * @param id
+	 * @return
+	 */
 	public boolean delete(String id) {
 		String sql = """
 				DELETE FROM departamentos
@@ -171,7 +193,11 @@ public class DepartamentosFunciones {
 		return false;
 
 	}
-
+	/**
+	 * Actualiza los datos de un departamento de la tabla
+	 * @param departamento
+	 * @return
+	 */
 	public boolean update(Departamento departamento) {
 		String sql = """
 				UPDATE departamentos

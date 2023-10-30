@@ -56,7 +56,10 @@ public class EmpleadosFunciones {
 		}
 
 	}
-
+	/**
+	 * Muestra los empleados
+	 * @return
+	 */
 	public String show() {
 		String sql = """
 				SELECT *
@@ -76,7 +79,11 @@ public class EmpleadosFunciones {
 		return "";
 
 	}
-
+	/**
+	 * Crea un empleado a partir de los datos de la tabla
+	 * @param rs
+	 * @return
+	 */
 	private Empleado read(ResultSet rs) {
 		try {
 			String id = rs.getString("id");
@@ -91,7 +98,11 @@ public class EmpleadosFunciones {
 		}
 		return null;
 	}
-
+	/**
+	 * Busca el departamento de un empleado
+	 * @param id
+	 * @return
+	 */
 	public Departamento buscarDepartamento(String id) {
 		String sql = """
 				SELECT id, nombre, jefeId
@@ -110,7 +121,11 @@ public class EmpleadosFunciones {
 		return null;
 
 	}
-
+	/**
+	 * 
+	 * @param rs
+	 * @return
+	 */
 	private Departamento readDep(ResultSet rs) {
 		try {
 			String sUuid = rs.getString("id");
@@ -122,7 +137,11 @@ public class EmpleadosFunciones {
 		}
 		return null;
 	}
-
+	/**
+	 * Aniade un empleado a la tabla
+	 * @param empleado
+	 * @return
+	 */
 	public boolean add(Empleado empleado) {
 		String sql = """
 				INSERT INTO empleados (id, nombre, salario, nacimiento, departamentoId)
@@ -149,7 +168,11 @@ public class EmpleadosFunciones {
 		return false;
 
 	}
-
+	/**
+	 * Borra un empleado de la tabla
+	 * @param id
+	 * @return
+	 */
 	public boolean delete(String id) {
 		String sql = """
 				DELETE FROM empleados
@@ -178,7 +201,11 @@ public class EmpleadosFunciones {
 		BD.close();
 
 	}
-
+	/**
+	 * Actualiza los datos de un empleado de la tabla
+	 * @param empleado
+	 * @return
+	 */
 	public boolean update(Empleado empleado) {
 		String sql = """
 				UPDATE empleados
