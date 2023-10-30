@@ -27,7 +27,7 @@ public class EmpleadosFunciones {
 						CREATE TABLE IF NOT EXISTS empleados (
 							id TEXT PRIMARY KEY,
 							nombre TEXT,
-							salario TEXT,
+							salario REAL,
 							nacimiento TEXT,
 							departamentoId TEXT,
 							FOREIGN KEY (departamentoId) REFERENCES departamentos(id)
@@ -35,9 +35,23 @@ public class EmpleadosFunciones {
 						)
 					""";
 		}
+		if (BD.typeDB.equals("mariadb")) {
+			sql = """
+						CREATE TABLE IF NOT EXISTS empleados (
+						  id UUID NOT NULL,
+						  nombre VARCHAR(255),
+						  salario DOUBLE,
+						  nacimiento DATE,
+						  departamentoId UUID,
+						  PRIMARY KEY (id),
+						  foreign key (departamentoId) references departamentos(id)
+						)
+					""";
+		}
 		try {
 			conn.createStatement().executeUpdate(sql);
 		} catch (SQLException e) {
+			IO.println(e.getMessage());
 		}
 
 	}
@@ -67,8 +81,14 @@ public class EmpleadosFunciones {
 			UUID uuid = UUID.fromString(id);
 			String nombre = rs.getString("nombre");
 			Double salario = Double.parseDouble(rs.getString("salario"));
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-			LocalDate nacimiento = LocalDate.parse(rs.getString("nacimiento"),formatter);
+			LocalDate nacimiento=null;
+			if (BD.typeDB.equals("sqlite")) {
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				 nacimiento = LocalDate.parse(rs.getString("nacimiento"),formatter);
+			}else {
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				 nacimiento = LocalDate.parse(rs.getString("nacimiento"),formatter);
+			}
 			Departamento departamento = buscarDepartamento(rs.getString("departamentoId"));
 			return new Empleado(uuid, nombre, salario, nacimiento, departamento);
 		} catch (SQLException e) {
@@ -117,8 +137,12 @@ public class EmpleadosFunciones {
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, empleado.getId().toString());
 			ps.setString(2, empleado.getNombre());
-			ps.setString(3, Double.toString(empleado.getSalario()));
+			ps.setDouble(3, empleado.getSalario());
+			if (BD.typeDB.equals("sqlite")) {
 			ps.setString(4, empleado.getNacimiento().toString());
+			}else {
+				ps.setDate(4, java.sql.Date.valueOf(empleado.getNacimiento()));
+			}
 			if(empleado.getDepartamento()==null) {
 				ps.setString(5, null);
 			}else {

@@ -7,6 +7,6 @@ dsn = jdbc:sqlite:departamentos.sqlite
 # Conexión a MariaDB
 #db=mariadb
 #driver = org.mariadb.jdbc.Driver
-#dsn = jdbc:mariadb://localhost/test
+#dsn = jdbc:mariadb://10.10.0.141:3301/gestion
 #user = root
 #pass = toor
