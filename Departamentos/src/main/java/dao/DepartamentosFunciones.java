@@ -34,7 +34,6 @@ public class DepartamentosFunciones {
 						nombre TEXT,
 						jefeId TEXT,
 						FOREIGN KEY (jefeId) REFERENCES empleados(id)
-						ON DELETE CASCADE
 					)
 				""";
 		}
